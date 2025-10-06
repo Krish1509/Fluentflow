@@ -78,6 +78,7 @@ export default function Home() {
   const [selectedEmoji, setSelectedEmoji] = useState('😊');
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [conversationMood, setConversationMood] = useState('friendly');
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -506,78 +507,48 @@ export default function Home() {
           </h1>
         </div>
         
-        <div className="flex items-center gap-1 sm:gap-3">
-          {/* Online Status - Hidden on mobile */}
-          <div className={`hidden sm:flex items-center gap-2 px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
-            isOnline 
-              ? 'bg-green-100 text-green-700' 
-              : 'bg-red-100 text-red-700'
-          }`}>
-            <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'} animate-pulse`}></div>
-            <span className="hidden sm:inline">{isOnline ? 'Online' : 'Offline'}</span>
-          </div>
+        <div className="flex items-center gap-2">
+          {/* Hamburger Menu for Mobile */}
+          <button
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className={`sm:hidden p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
+              darkMode 
+                ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+            }`}
+            title="Menu"
+          >
+            ☰
+          </button>
 
-          {/* Message Count - Hidden on mobile */}
-          <div className={`hidden sm:block px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
-            darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-100 text-blue-700'
-          }`}>
-            💬 {messageCount}
-          </div>
-
-          {/* Current Time - Hidden on mobile */}
-          <div className={`hidden sm:block px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
-            darkMode ? 'bg-gray-700/50 text-gray-300' : 'bg-gray-100 text-gray-700'
-          }`}>
-            🕐 {currentTime ? currentTime.toLocaleTimeString() : '--:--:--'}
-          </div>
-
-          {/* Voice Selection Dropdown - Hidden on mobile */}
+          {/* Desktop Menu Items */}
           <div className="hidden sm:flex items-center gap-2">
-            <span className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              🎤
-            </span>
-            <select
-              value={selectedVoice}
-              onChange={(e) => setSelectedVoice(e.target.value)}
-              className={`px-2 sm:px-3 py-1 rounded-lg text-xs border transition-all duration-200 focus:ring-2 focus:ring-blue-500 ${
+            {/* Quick Actions Button */}
+            <button
+              onClick={() => setShowQuickActions(!showQuickActions)}
+              className={`p-1.5 sm:p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
                 darkMode 
-                  ? 'bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50' 
-                  : 'bg-white/80 border-gray-300 text-gray-800 hover:bg-white'
+                  ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
               }`}
+              title="Quick Actions"
             >
-              {availableVoices.map((voice, index) => (
-                <option key={index} value={voice.name}>
-                  {voice.name} ({voice.lang})
-                </option>
-              ))}
-            </select>
+              ⚡
+            </button>
+            
+            {/* Settings Button */}
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className={`p-1.5 sm:p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
+                darkMode 
+                  ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+              }`}
+              title="Settings"
+            >
+              ⚙️
+            </button>
           </div>
-
-          {/* Quick Actions Button - Hidden on mobile */}
-          <button
-            onClick={() => setShowQuickActions(!showQuickActions)}
-            className={`hidden sm:block p-1.5 sm:p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
-              darkMode 
-                ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-            }`}
-            title="Quick Actions"
-          >
-            ⚡
-          </button>
-          
-          {/* Settings Button - Hidden on mobile */}
-          <button
-            onClick={() => setShowSettings(!showSettings)}
-            className={`hidden sm:block p-1.5 sm:p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
-              darkMode 
-                ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-            }`}
-            title="Settings"
-          >
-            ⚙️
-          </button>
           
           {/* Dark Mode Toggle */}
           <button
@@ -592,6 +563,94 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {showMobileMenu && (
+        <div className={`sm:hidden border-b ${
+          darkMode 
+            ? 'bg-gray-800/90 border-gray-700/50' 
+            : 'bg-white/90 border-gray-200/50'
+        } backdrop-blur-md px-4 py-3`}>
+          <div className="flex flex-col gap-3">
+            {/* Voice Selection */}
+            <div className="flex items-center gap-3">
+              <span className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                🎤 Voice
+              </span>
+              <select
+                value={selectedVoice}
+                onChange={(e) => setSelectedVoice(e.target.value)}
+                className={`flex-1 px-3 py-2 rounded-lg text-sm border transition-all duration-200 focus:ring-2 focus:ring-blue-500 ${
+                  darkMode 
+                    ? 'bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50' 
+                    : 'bg-white/80 border-gray-300 text-gray-800 hover:bg-white'
+                }`}
+              >
+                {availableVoices.map((voice, index) => (
+                  <option key={index} value={voice.name}>
+                    {voice.name} ({voice.lang})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Status Indicators */}
+            <div className="flex items-center gap-3">
+              <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${
+                isOnline 
+                  ? 'bg-green-100 text-green-700' 
+                  : 'bg-red-100 text-red-700'
+              }`}>
+                <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'} animate-pulse`}></div>
+                {isOnline ? 'Online' : 'Offline'}
+              </div>
+
+              <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-100 text-blue-700'
+              }`}>
+                💬 {messageCount}
+              </div>
+
+              <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                darkMode ? 'bg-gray-700/50 text-gray-300' : 'bg-gray-100 text-gray-700'
+              }`}>
+                🕐 {currentTime ? currentTime.toLocaleTimeString() : '--:--:--'}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowQuickActions(!showQuickActions);
+                  setShowMobileMenu(false);
+                }}
+                className={`flex-1 py-2 px-4 rounded-lg transition-all duration-200 hover:scale-105 ${
+                  darkMode 
+                    ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                }`}
+              >
+                ⚡ Quick Actions
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowSettings(!showSettings);
+                  setShowMobileMenu(false);
+                }}
+                className={`flex-1 py-2 px-4 rounded-lg transition-all duration-200 hover:scale-105 ${
+                  darkMode 
+                    ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                }`}
+              >
+                ⚙️ Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Chat Messages Area */}
       <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4 min-h-0">
