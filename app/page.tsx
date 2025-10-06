@@ -459,7 +459,7 @@ export default function Home() {
 
 
   return (
-    <div className={`h-screen flex flex-col transition-all duration-300 overflow-hidden ${
+    <div className={`min-h-screen flex flex-col transition-all duration-300 ${
       darkMode 
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
         : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'
@@ -469,12 +469,12 @@ export default function Home() {
         darkMode 
           ? 'bg-gray-800/80 backdrop-blur-md border-gray-700/50' 
           : 'bg-white/80 backdrop-blur-md border-gray-200/50'
-      } border-b px-6 py-4 flex items-center justify-between shadow-lg`}>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-            <span className="text-white text-xl font-bold">F</span>
+      } border-b px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between shadow-lg`}>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+            <span className="text-white text-lg sm:text-xl font-bold">F</span>
           </div>
-          <h1 className={`text-2xl font-bold bg-gradient-to-r ${
+          <h1 className={`text-lg sm:text-2xl font-bold bg-gradient-to-r ${
             darkMode 
               ? 'from-blue-400 to-purple-400' 
               : 'from-blue-600 to-purple-600'
@@ -483,40 +483,40 @@ export default function Home() {
           </h1>
         </div>
         
-        <div className="flex items-center gap-3">
-          {/* Online Status */}
-          <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${
+        <div className="flex items-center gap-1 sm:gap-3">
+          {/* Online Status - Hidden on mobile */}
+          <div className={`hidden sm:flex items-center gap-2 px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
             isOnline 
               ? 'bg-green-100 text-green-700' 
               : 'bg-red-100 text-red-700'
           }`}>
             <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'} animate-pulse`}></div>
-            {isOnline ? 'Online' : 'Offline'}
+            <span className="hidden sm:inline">{isOnline ? 'Online' : 'Offline'}</span>
           </div>
 
-          {/* Message Count */}
-          <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+          {/* Message Count - Hidden on mobile */}
+          <div className={`hidden sm:block px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
             darkMode ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-100 text-blue-700'
           }`}>
             💬 {messageCount}
           </div>
 
-          {/* Current Time */}
-          <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+          {/* Current Time - Hidden on mobile */}
+          <div className={`hidden sm:block px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
             darkMode ? 'bg-gray-700/50 text-gray-300' : 'bg-gray-100 text-gray-700'
           }`}>
             🕐 {currentTime ? currentTime.toLocaleTimeString() : '--:--:--'}
           </div>
 
-          {/* Voice Selection Dropdown */}
-          <div className="flex items-center gap-2">
+          {/* Voice Selection Dropdown - Hidden on mobile */}
+          <div className="hidden sm:flex items-center gap-2">
             <span className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               🎤
             </span>
             <select
               value={selectedVoice}
               onChange={(e) => setSelectedVoice(e.target.value)}
-              className={`px-3 py-1 rounded-lg text-xs border transition-all duration-200 focus:ring-2 focus:ring-blue-500 ${
+              className={`px-2 sm:px-3 py-1 rounded-lg text-xs border transition-all duration-200 focus:ring-2 focus:ring-blue-500 ${
                 darkMode 
                   ? 'bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50' 
                   : 'bg-white/80 border-gray-300 text-gray-800 hover:bg-white'
@@ -530,10 +530,10 @@ export default function Home() {
             </select>
           </div>
 
-          {/* Quick Actions Button */}
+          {/* Quick Actions Button - Hidden on mobile */}
           <button
             onClick={() => setShowQuickActions(!showQuickActions)}
-            className={`p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
+            className={`hidden sm:block p-1.5 sm:p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
               darkMode 
                 ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
                 : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
@@ -543,10 +543,10 @@ export default function Home() {
             ⚡
           </button>
           
-          {/* Settings Button */}
+          {/* Settings Button - Hidden on mobile */}
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className={`p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
+            className={`hidden sm:block p-1.5 sm:p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
               darkMode 
                 ? 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300' 
                 : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
@@ -556,9 +556,10 @@ export default function Home() {
             ⚙️
           </button>
           
+          {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className={`p-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg ${
+            className={`p-1.5 sm:p-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg ${
               darkMode 
                 ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-white' 
                 : 'bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700'
@@ -570,50 +571,50 @@ export default function Home() {
       </div>
 
       {/* Chat Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+      <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4 min-h-0">
         {/* Welcome Message */}
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center py-8">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4 shadow-2xl">
-              <span className="text-3xl">🤖</span>
+          <div className="flex flex-col items-center justify-center h-full text-center py-4 sm:py-8 px-4">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-3 sm:mb-4 shadow-2xl">
+              <span className="text-2xl sm:text-3xl">🤖</span>
             </div>
-            <h2 className={`text-2xl font-bold mb-3 ${
+            <h2 className={`text-xl sm:text-2xl font-bold mb-2 sm:mb-3 ${
               darkMode ? 'text-white' : 'text-gray-800'
             }`}>
               Welcome to Fluent Flow
             </h2>
-            <p className={`text-base mb-6 max-w-md ${
+            <p className={`text-sm sm:text-base mb-4 sm:mb-6 max-w-sm sm:max-w-md ${
               darkMode ? 'text-gray-300' : 'text-gray-600'
             }`}>
               Your AI language tutor is ready to help! Start a conversation by typing a message or using voice input.
             </p>
-            <div className="flex gap-3">
-              <div className={`px-3 py-2 rounded-xl ${
+            <div className="flex gap-2 sm:gap-3">
+              <div className={`px-2 sm:px-3 py-2 rounded-xl ${
                 darkMode ? 'bg-gray-800' : 'bg-white'
               } shadow-lg border`}>
-                <span className="text-xl">💬</span>
+                <span className="text-lg sm:text-xl">💬</span>
                 <p className={`text-xs mt-1 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Type</p>
               </div>
-              <div className={`px-3 py-2 rounded-xl ${
+              <div className={`px-2 sm:px-3 py-2 rounded-xl ${
                 darkMode ? 'bg-gray-800' : 'bg-white'
               } shadow-lg border`}>
-                <span className="text-xl">🎤</span>
+                <span className="text-lg sm:text-xl">🎤</span>
                 <p className={`text-xs mt-1 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Voice</p>
               </div>
-              <div className={`px-3 py-2 rounded-xl ${
+              <div className={`px-2 sm:px-3 py-2 rounded-xl ${
                 darkMode ? 'bg-gray-800' : 'bg-white'
               } shadow-lg border`}>
-                <span className="text-xl">🎙️</span>
+                <span className="text-lg sm:text-xl">🎙️</span>
                 <p className={`text-xs mt-1 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Interactive</p>
               </div>
             </div>
-        </div>
+          </div>
         )}
 
         {/* Typing Indicator */}
         {typingIndicator && (
           <div className="flex justify-start">
-            <div className={`max-w-[80%] rounded-2xl p-4 shadow-lg ${
+            <div className={`max-w-[85%] sm:max-w-[80%] rounded-2xl p-3 sm:p-4 shadow-lg ${
               darkMode ? 'bg-gray-800/90 border border-gray-700/50' : 'bg-white/90 border border-gray-200/50'
             } backdrop-blur-sm`}>
               <div className="flex items-center gap-3">
@@ -630,25 +631,25 @@ export default function Home() {
                 </span>
               </div>
             </div>
-          </div>
+        </div>
         )}
 
         {/* Chat History */}
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] rounded-2xl p-4 shadow-lg relative transition-all duration-200 hover:shadow-xl ${
+            <div className={`max-w-[85%] sm:max-w-[80%] rounded-2xl p-3 sm:p-4 shadow-lg relative transition-all duration-200 hover:shadow-xl ${
               message.type === 'user' 
                 ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-lg' 
                 : `${darkMode ? 'bg-gray-800/90 border border-gray-700/50' : 'bg-white/90 border border-gray-200/50'} rounded-bl-lg backdrop-blur-sm`
             }`}>
               {message.type === 'ai' && (
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg">
                       AI
                     </div>
                     <div>
-                      <span className={`text-sm font-semibold ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                      <span className={`text-xs sm:text-sm font-semibold ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
                         AI Tutor
                       </span>
                       <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -668,7 +669,7 @@ export default function Home() {
                         speakMessage(message.id, message.text);
                       }
                     }}
-                    className={`absolute top-2 right-2 p-2 rounded-full transition-all duration-200 z-10 shadow-lg ${
+                    className={`absolute top-1 right-1 sm:top-2 sm:right-2 p-1.5 sm:p-2 rounded-full transition-all duration-200 z-10 shadow-lg ${
                       isSpeaking && speakingMessageId === message.id
                         ? 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-400 hover:to-red-500 scale-110' 
                         : darkMode 
@@ -677,11 +678,11 @@ export default function Home() {
                     }`}
                     title={isSpeaking && speakingMessageId === message.id ? "Stop speaking" : "Speak this message"}
                   >
-                    {isSpeaking && speakingMessageId === message.id ? '⏹' : '🔊'}
+                    <span className="text-sm sm:text-base">{isSpeaking && speakingMessageId === message.id ? '⏹' : '🔊'}</span>
                   </button>
                 </div>
               )}
-              <p className={`whitespace-pre-wrap leading-relaxed ${
+              <p className={`whitespace-pre-wrap leading-relaxed text-sm sm:text-base ${
                 message.type === 'user' 
                   ? 'text-white font-medium' 
                   : darkMode 
@@ -740,35 +741,35 @@ export default function Home() {
           </div>
         )}
 
-        {/* Interactive Mode Popup */}
-        {interactiveMode && (
-          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
-            <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-3xl p-8 shadow-2xl max-w-lg w-full mx-4 border-2`}>
+      {/* Interactive Mode Popup */}
+      {interactiveMode && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm p-4">
+          <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl max-w-lg w-full border-2`}>
               <div className="text-center">
                 {/* Status */}
                 <div className="mb-8">
                   {isListening ? (
-                    <div className="flex flex-col items-center gap-6">
-                      <div className="flex space-x-3">
-                        <div className="w-4 h-16 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse"></div>
-                        <div className="w-4 h-20 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.1s'}}></div>
-                        <div className="w-4 h-12 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                        <div className="w-4 h-18 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></div>
-                        <div className="w-4 h-10 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                    <div className="flex flex-col items-center gap-4 sm:gap-6">
+                      <div className="flex space-x-2 sm:space-x-3">
+                        <div className="w-3 h-12 sm:w-4 sm:h-16 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse"></div>
+                        <div className="w-3 h-16 sm:w-4 sm:h-20 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.1s'}}></div>
+                        <div className="w-3 h-10 sm:w-4 sm:h-12 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                        <div className="w-3 h-14 sm:w-4 sm:h-18 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></div>
+                        <div className="w-3 h-8 sm:w-4 sm:h-10 bg-gradient-to-t from-purple-400 to-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                       </div>
                       <div>
-                        <h3 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} mb-2`}>🎙️ Listening...</h3>
-                        <p className={`text-lg ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Speak now - I&apos;ll respond and speak back</p>
+                        <h3 className={`text-xl sm:text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} mb-2`}>🎙️ Listening...</h3>
+                        <p className={`text-sm sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Speak now - I&apos;ll respond and speak back</p>
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center gap-6">
-                      <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                        <span className="text-4xl">🎙️</span>
+                    <div className="flex flex-col items-center gap-4 sm:gap-6">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                        <span className="text-3xl sm:text-4xl">🧠</span>
                       </div>
                       <div>
-                        <h3 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} mb-2`}>AI Interactive</h3>
-                        <p className={`text-lg ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Ready for natural conversation</p>
+                        <h3 className={`text-xl sm:text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} mb-2`}>AI Interactive</h3>
+                        <p className={`text-sm sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Ready for natural conversation</p>
                       </div>
                     </div>
                   )}
@@ -784,7 +785,7 @@ export default function Home() {
                         startInteractiveListening();
                       }
                     }}
-                    className={`w-full py-4 px-8 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 ${
+                    className={`w-full py-3 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 ${
                       isListening
                         ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg'
                         : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg'
@@ -807,7 +808,7 @@ export default function Home() {
                         timeoutRefs.current.clear();
                       }
                     }}
-                    className={`w-full py-3 px-6 rounded-2xl font-medium transition-all duration-200 hover:scale-105 ${
+                    className={`w-full py-3 sm:py-4 px-6 sm:px-8 rounded-2xl font-medium text-sm sm:text-base transition-all duration-200 hover:scale-105 ${
                       darkMode 
                         ? 'bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600' 
                         : 'bg-gray-200 hover:bg-gray-300 text-gray-700 border border-gray-300'
@@ -855,21 +856,21 @@ export default function Home() {
         darkMode 
           ? 'bg-gray-800/80 backdrop-blur-md border-gray-700/50' 
           : 'bg-white/80 backdrop-blur-md border-gray-200/50'
-      } border-t p-4 shadow-2xl flex-shrink-0`}>
+      } border-t p-2 sm:p-4 shadow-2xl flex-shrink-0`}>
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={handleSubmit} className="flex gap-4">
+          <form onSubmit={handleSubmit} className="flex gap-2 sm:gap-4">
             <div className="flex-1 relative">
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="Type your message here..."
-                className={`w-full p-3 pr-32 border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none transition-all duration-200 ${
+                className={`w-full p-2 sm:p-3 pr-20 sm:pr-32 border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none transition-all duration-200 text-sm sm:text-base ${
                   darkMode 
                     ? 'bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 hover:bg-gray-700/70' 
                     : 'bg-white/80 border-gray-300 text-gray-800 placeholder-gray-500 hover:bg-white'
                 }`}
                 rows={1}
-                style={{ minHeight: '48px', maxHeight: '100px' }}
+                style={{ minHeight: '40px', maxHeight: '100px' }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -878,11 +879,11 @@ export default function Home() {
                 }}
               />
               
-              {/* Emoji Picker Button */}
+              {/* Emoji Picker Button - Hidden on mobile */}
               <button
                 type="button"
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className={`absolute right-24 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ${
+                className={`hidden sm:block absolute right-24 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ${
                   darkMode
                     ? 'bg-gray-600/80 hover:bg-gray-500/80 text-gray-300 hover:text-white hover:scale-105'
                     : 'bg-gray-100/80 hover:bg-gray-200/80 text-gray-600 hover:text-gray-800 hover:scale-105'
@@ -902,7 +903,7 @@ export default function Home() {
                     startListening();
                   }
                 }}
-                className={`absolute right-14 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ${
+                className={`absolute right-12 sm:right-14 top-1/2 transform -translate-y-1/2 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ${
                   isListening && !interactiveMode
                     ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white scale-110'
                     : darkMode
@@ -911,14 +912,14 @@ export default function Home() {
                 }`}
                 title="Voice to Text: Speak → Text appears in input → Edit & Send"
               >
-                🎤
+                <span className="text-sm sm:text-base">🎤</span>
               </button>
 
               {/* AI Interactive Button */}
               <button
                 type="button"
                 onClick={toggleInteractiveMode}
-                className={`absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ${
+                className={`absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ${
                   interactiveMode
                     ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white scale-110'
                     : darkMode
@@ -927,22 +928,22 @@ export default function Home() {
                 }`}
                 title="AI Interactive: Speak → AI responds → AI speaks → Repeat"
               >
-                🎙️
+                <span className="text-sm sm:text-base">🎙️</span>
               </button>
             </div>
             <button
               type="submit"
               disabled={loading || !inputText.trim()}
-              className={`px-6 py-4 rounded-3xl font-bold text-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-xl ${
+              className={`px-3 sm:px-6 py-3 sm:py-4 rounded-2xl sm:rounded-3xl font-bold text-sm sm:text-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-xl ${
                 loading || !inputText.trim()
                   ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                   : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-blue-500/25'
               }`}
             >
               {loading ? (
-                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-4 h-4 sm:w-6 sm:h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
               )}
@@ -953,8 +954,8 @@ export default function Home() {
 
       {/* Settings Modal */}
       {showSettings && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-3xl p-6 shadow-2xl max-w-md w-full mx-4`}>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm p-4">
+          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl max-w-md w-full`}>
             <div className="flex items-center justify-between mb-6">
               <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                 ⚙️ Settings
@@ -966,7 +967,7 @@ export default function Home() {
                 ✕
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -1034,8 +1035,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+              </div>
+            )}
 
       {/* Quick Actions Modal */}
       {showQuickActions && (
@@ -1115,8 +1116,8 @@ export default function Home() {
               </button>
             </div>
           </div>
-        </div>
-      )}
+          </div>
+        )}
 
       {/* Emoji Picker Modal */}
       {showEmojiPicker && (
@@ -1167,7 +1168,7 @@ export default function Home() {
             : 'bg-red-100 border-red-400 text-red-700'
         } border`}>
           <strong>Error:</strong> {error}
-        </div>
+      </div>
       )}
     </div>
   );
