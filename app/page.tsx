@@ -220,9 +220,9 @@ export default function Home() {
           
           utterance.onend = () => {
             // After AI finishes speaking, start listening again in interactive mode
-            if (interactiveMode) {
+            if (interactiveMode && !isListening) {
               const timeoutId = setTimeout(() => {
-                if (interactiveMode) {
+                if (interactiveMode && !isListening) {
                   startInteractiveListening();
                 }
               }, 800);
@@ -232,9 +232,9 @@ export default function Home() {
           
           utterance.onerror = () => {
             // If speech fails, still restart listening
-            if (interactiveMode) {
+            if (interactiveMode && !isListening) {
               const timeoutId = setTimeout(() => {
-                if (interactiveMode) {
+                if (interactiveMode && !isListening) {
                   startInteractiveListening();
                 }
               }, 1000);
@@ -304,18 +304,20 @@ export default function Home() {
         // Ignore errors when stopping
       }
     }
-    setIsListening(false);
     
-    // Clear all pending timeouts
+    // Clear all pending timeouts immediately
     timeoutRefs.current.forEach(timeoutId => {
       clearTimeout(timeoutId);
     });
     timeoutRefs.current.clear();
     
-    // Force reset recognition state
-    setTimeout(() => {
-      setIsListening(false);
-    }, 100);
+    // Force reset all states immediately
+    setIsListening(false);
+    setIsSpeaking(false);
+    setSpeakingMessageId(null);
+    
+    // Cancel any ongoing speech
+    speechSynthesis.cancel();
   };
 
   const startInteractiveListening = () => {
@@ -332,9 +334,16 @@ export default function Home() {
       // Ignore errors when stopping
     }
     
+    // Prevent multiple listening sessions
+    if (isListening) {
+      console.log("Already listening, ignoring start request");
+      return;
+    }
+    
     // Wait a bit before starting new recognition
     setTimeout(() => {
       if (!interactiveMode) return; // Check if still in interactive mode
+      if (isListening) return; // Double check we're not already listening
       
       setError("");
       setIsListening(true);
@@ -353,9 +362,9 @@ export default function Home() {
         
         // Only restart for certain errors, not all
         if (e?.error === 'no-speech' || e?.error === 'audio-capture' || e?.error === 'not-allowed') {
-          if (interactiveMode) {
+          if (interactiveMode && !isListening) {
             const timeoutId = setTimeout(() => {
-              if (interactiveMode) {
+              if (interactiveMode && !isListening) {
                 startInteractiveListening();
               }
             }, 2000);
@@ -379,10 +388,10 @@ export default function Home() {
       } catch (e) {
         console.error("Failed to start recognition:", e);
         setIsListening(false);
-        // Try again after a delay
-        if (interactiveMode) {
+        // Try again after a delay only if still in interactive mode and not listening
+        if (interactiveMode && !isListening) {
           const timeoutId = setTimeout(() => {
-            if (interactiveMode) {
+            if (interactiveMode && !isListening) {
               startInteractiveListening();
             }
           }, 3000);
@@ -396,17 +405,31 @@ export default function Home() {
     if (interactiveMode) {
       // Stop interactive mode completely - clean up everything
       console.log("Closing interactive mode");
-      setInteractiveMode(false);
-      stopListening();
-      speechSynthesis.cancel(); // Stop any ongoing speech
-      setIsListening(false); // Make sure listening is stopped
-      setSpeakingMessageId(null); // Clear speaking state
-      setIsSpeaking(false); // Clear speaking state
-      // Clear any pending timeouts
-      if (timeoutRefs.current) {
-        timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
-        timeoutRefs.current.clear();
+      
+      // Stop all recognition and speech immediately
+      const rec = recognitionRef.current;
+      if (rec) {
+        try {
+          rec.stop();
+          if (rec.abort) rec.abort();
+        } catch {
+          // Ignore errors
+        }
       }
+      
+      // Cancel all speech
+      speechSynthesis.cancel();
+      
+      // Clear all timeouts
+      timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
+      timeoutRefs.current.clear();
+      
+      // Reset all states
+      setInteractiveMode(false);
+      setIsListening(false);
+      setIsSpeaking(false);
+      setSpeakingMessageId(null);
+      setError(""); // Clear any errors
     } else {
       // Start interactive mode - but don't start listening yet
       console.log("Opening interactive mode");
@@ -796,17 +819,33 @@ export default function Home() {
 
                   <button
                     onClick={() => {
-                      setInteractiveMode(false);
-                      stopListening();
-                      speechSynthesis.cancel();
-                      setIsListening(false);
-                      setSpeakingMessageId(null);
-                      setIsSpeaking(false);
-                      // Clear any pending timeouts
-                      if (timeoutRefs.current) {
-                        timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
-                        timeoutRefs.current.clear();
+                      // Use the same robust cleanup as toggleInteractiveMode
+                      console.log("Closing interactive mode via close button");
+                      
+                      // Stop all recognition and speech immediately
+                      const rec = recognitionRef.current;
+                      if (rec) {
+                        try {
+                          rec.stop();
+                          if (rec.abort) rec.abort();
+                        } catch {
+                          // Ignore errors
+                        }
                       }
+                      
+                      // Cancel all speech
+                      speechSynthesis.cancel();
+                      
+                      // Clear all timeouts
+                      timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
+                      timeoutRefs.current.clear();
+                      
+                      // Reset all states
+                      setInteractiveMode(false);
+                      setIsListening(false);
+                      setIsSpeaking(false);
+                      setSpeakingMessageId(null);
+                      setError(""); // Clear any errors
                     }}
                     className={`w-full py-3 sm:py-4 px-6 sm:px-8 rounded-2xl font-medium text-sm sm:text-base transition-all duration-200 hover:scale-105 ${
                       darkMode 
